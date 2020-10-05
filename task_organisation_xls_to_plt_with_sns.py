@@ -59,7 +59,7 @@ def urgency(vec, weekend):
             urgency = int(ratio * 100)  
 
         #make the duration of hours left more sophisticated based on todays date and the remaining hours whether it is a work day (09:-17:00/anything which people want)
-        #or study day (presumably time until 22:00 or longer if you want hardcore study session)
+        #or study day (presumably time until 22:00)
         elif 0 <= hours_left < 5:
             urgency = 100
         elif hours_left<0:
@@ -73,9 +73,6 @@ def urgency(vec, weekend):
             urgency = -100
         elif hours_left >= 6:
             urgency = int(ratio * 100)  
-
-        #make the duration of hours left more sophisticated based on todays date and the remaining hours whether it is a work day (09:-17:00/anything which people want)
-        #or study day (presumably time until 22:00 or longer if you want hardcore study session)
         elif 0 <= hours_left < 6:
             urgency = 100
         elif hours_left<0:
@@ -87,7 +84,6 @@ def urgency(vec, weekend):
 
     
 
-    ## maybe make urgency dependent on how many tasks are still there, which one is the most pressing (earliest due date) and then give them a score between 0 to 100 based on geometric distribution.
     hours_left = int(hours_left)/4 #per day urgency
 
     """ for really low values in timestamps, the urgency somehow gets set to 0. check why! maybe the ratio is guilty! it sure is, mylord."""
@@ -96,8 +92,6 @@ def urgency(vec, weekend):
         
     return urgency
 
-#def effort(vec): function which returns the time passed between "doing" and "done", tries to measure the real effort put into some task 
-
 
 def time_elapsed(vec):
     """ return here should be in hours """
@@ -105,9 +99,6 @@ def time_elapsed(vec):
     
     #add state-change from "to-do" into "doing", called "Begin Date"
     
-
-    #if pd.isnull(time_elapsed) == False:
-    #    return time_elapsed
     if pd.isnull(outs) == False:
         return round((outs - ins).total_seconds()/3600,2)
     else:
@@ -127,7 +118,6 @@ def map_10s_to_100s(i):
 
 def priority(vec):
 
-    #maybe change this to numbers, so you can sort? can always add strings again later on!
     names = ["Low","Medium","High","Today","Done"]
 
     urgency, impact, priority = vec[0], vec[1], vec[2]
@@ -147,17 +137,15 @@ def priority(vec):
             priority = names[1]
         elif 66 < calc <= 99.99:
             priority = names[2]
-        else:                               #marks tasks which do not have any urgency "done" 
-            priority = names[-1]
-    
+        else:                               
+            priority = names[-1]                            #mark tasks without urgency calculation as "done"
+
     return priority
 
 def status(vec):
 
     prio, status, finished, set_to_doing, id = vec[0], vec[1], vec[2], vec[3], vec[4]
 
-
-    #check these conditions here, still some improvements to be done!
     if "Done" in prio:
         status = "Done"
     elif pd.isna(finished) == True and status == "Done":
@@ -264,19 +252,11 @@ if len(ids) == len(checklist):
 else:
     print("amount of IDs seems to be different than the amount of rows")
 
-#print(df.tail())
-
 
 labels = df['Name'].tolist()
 
 #creates joined list containing both the IDs first and labels second, used for showing info on hover
 joined = [i + ": " + j for i, j in zip(idstrs, labels)] 
-#print(joined)
-
-
-### sorting the dataframe according to priority / urgency? ###
-
-#e.g. you do not want to see the tasks which were already completed, move them to another sheet! /like the bar task list "Sprint"/"Backlog"/"Done"/"Obsolete"
 
 
 ##############
@@ -304,7 +284,7 @@ worksheet.set_column('J:J', 15)
 worksheet.set_column('M:N', 17) # timestamps fit perfectly inside width=17 cells (in excel)
 worksheet.set_column('O:O', 12)
 worksheet.set_column('Q:Q', 12) # measured effort 
-#column p is comment, no need for setting any width because it is the last column
+                                #column p is comment, no need for setting any width because it is the last column
 
 
 writer.save()
@@ -416,7 +396,3 @@ print(os.path.basename(__file__),'compilation time: {}s'.format(compilation_time
 
 #show plot
 plt.show()
-
-
-### possible improvement of the hovering (not deemed necessary so far):
-#https://stackoverflow.com/questions/13306519/get-data-from-plot-with-matplotlib/13306887#13306887
