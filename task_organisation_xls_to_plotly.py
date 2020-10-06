@@ -15,6 +15,7 @@ begin = pd.Timestamp.now()
 
 ### change infile accordingly depending on path/file
 infile = "organisation-test.xlsx"
+outfile = infile
 
 
 #split column 5 ('Prerequisite (IDs) based on separator into one or multiple list elements)
@@ -281,7 +282,7 @@ else:
 ### OUTPUT ###
 ##############
 
-writer = pd.ExcelWriter('organisation-test.xlsx', engine='xlsxwriter')
+writer = pd.ExcelWriter(outfile, engine='xlsxwriter')
 df.to_excel(writer, sheet_name='Sheet1', index = False)
 
 workbook  = writer.book

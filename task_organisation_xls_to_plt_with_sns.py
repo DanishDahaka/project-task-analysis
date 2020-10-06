@@ -13,6 +13,7 @@ import os
 begin = pd.Timestamp.now()
 
 infile = "organisation-test.xlsx"
+outfile = infile
 
 #split column 5 ('Prerequisite (IDs) based on separator into one or multiple list elements)
 df = pd.read_excel(infile, usecols = "A:R") 
@@ -263,7 +264,7 @@ joined = [i + ": " + j for i, j in zip(idstrs, labels)]
 ### OUTPUT ###
 ##############
 
-writer = pd.ExcelWriter('organisation-test.xlsx', engine='xlsxwriter')
+writer = pd.ExcelWriter(outfile, engine='xlsxwriter')
 df.to_excel(writer, sheet_name='Sheet1', index = False)
 
 workbook  = writer.book
