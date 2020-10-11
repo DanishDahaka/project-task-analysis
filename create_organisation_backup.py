@@ -19,8 +19,8 @@ df.to_excel(writer, sheet_name='Sheet1', index = False)
 workbook  = writer.book
 worksheet = writer.sheets['Sheet1']
 
-#change sheet size to match column width (manually, this does not auto-fit), https://stackoverflow.com/questions/17326973/is-there-a-way-to-auto-adjust-excel-column-widths-with-pandas-excelwriter
-worksheet.set_column('A:A', 4)  # ID column, width for larger numbers required in the long run, after 999
+#change sheet size to match column width (manually, this does not auto-fit)
+worksheet.set_column('A:A', 4)  # ID column, width for larger number (>999)
 worksheet.set_column('B:B', 17) # name column
 worksheet.set_column('C:C', 9)  # category column
 worksheet.set_column('D:D', 17)
