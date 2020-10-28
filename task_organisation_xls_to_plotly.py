@@ -3,9 +3,6 @@ import numpy as np
 import math
 import random as r
 import os
-#pip install plotly
-import plotly.offline as pyo
-import plotly.graph_objs as go
 
 ### resources ###
 #https://wiki.en.it-processmaps.com/index.php/Checklist_Incident_Priority
@@ -296,6 +293,8 @@ joined = [i + ": " + j for i, j in zip(idstrs, labels)]
 #######################
 ### plotly plotting ###
 #######################
+
+#pip install plotly
 import plotly.express as px
 
 fig = px.scatter(df,    x=df['Impact/Output'], 
