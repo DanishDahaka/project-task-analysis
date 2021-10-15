@@ -10,13 +10,15 @@ import os
 
 begin = pd.Timestamp.now()
 
+path = os.path.dirname(os.path.abspath(__file__))
+
 ### change infile accordingly depending on path/file
-infile = "organisation-test.xlsx"
+infile = "/organisation-test.xlsx"
 outfile = infile
 
 
 #split column 5 ('Prerequisite (IDs) based on separator into one or multiple list elements)
-df = pd.read_excel(infile, usecols = "A:R") 
+df = pd.read_excel(path+infile, usecols = "A:R") 
 
 
 def get_remaining_hours(timestamp,forward):
