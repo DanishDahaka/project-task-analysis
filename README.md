@@ -9,4 +9,4 @@ Based on task list in tabular format (.xlsx) which is read into a dataframe (df)
 Again using the same .xlsx file, the current data is written into a new .xlsx file with added timestamps to the filename. Useful for e.g. automation of backups
 
 ## input_recommendations.py & recommender_sys_for_input.py
-Create custom recommendations based on text input field rendered by Dash. The recommendations result from calculations of the (Cosine Similarity)[https://en.wikipedia.org/wiki/Cosine_similarity] between the text vectors created by (TF-IDF)[https://en.wikipedia.org/wiki/Tf–idf].
+Create custom recommendations based on text input field rendered by Dash. The recommendations result from calculations of the [Cosine Similarity](https://en.wikipedia.org/wiki/Cosine_similarity) between the text vectors created by [TF-IDF](https://en.wikipedia.org/wiki/Tf–idf).
