@@ -14,11 +14,11 @@ path = os.path.dirname(os.path.abspath(__file__))
 
 ### change infile accordingly depending on path/file
 infile = "/organisation-test.xlsx"
-outfile = infile
+outfile = path+infile
 
 
 #split column 5 ('Prerequisite (IDs) based on separator into one or multiple list elements)
-df = pd.read_excel(path+infile, usecols = "A:R") 
+df = pd.read_excel(outfile, usecols = "A:R", engine='openpyxl')
 
 
 def get_remaining_hours(timestamp,forward):
@@ -152,13 +152,13 @@ weekdays_hours, weekend_hours = 6,5
 current_day = pd.Timestamp.now()
 day_of_week = current_day.dayofweek
 
-if(day_of_week < 5):
+"""if(day_of_week < 5):
 #weekend time, day_of_week 5 or 6
     weekend = False
 elif(day_of_week == 5 or day_of_week == 6):
     weekend = True
 else:
-    raise Exception("Days did not work")
+    raise Exception("Days did not work")"""
 
 ###############################
 # pandas dataframe operations #
@@ -175,7 +175,7 @@ df['Worked on (hrs)'] = df['Entry Date'].apply(get_remaining_hours, args=(False,
 # Updating urgency
 df['Urgency'] = df[['Urgency','Worked on (hrs)','Time left (hrs)','Finished on', \
 'Estimate (hrs)', 'Set to Doing', 'ID', 'Deadline', \
-'Name']].apply(urgency, args=(weekend,), axis = 1)
+'Name']].apply(lambda u: urgency(u), axis = 1)
 
 # Setting priority 
 df['Priority'] = df[['Urgency','Impact/Output', \
@@ -189,14 +189,14 @@ df['Time elapsed'] = df[['Entry Date','Finished on',\
 df['Status'] = df[['Priority','Status','Finished on', \
 'Set to Doing', 'ID']].apply(lambda a: status(a), axis = 1)
 
-#Effort is based on the time which elapsed from set to doing until finished
+# Effort is based on the time which elapsed from set to doing until finished
 df['Effort (hrs)'] = df[['Set to Doing','Finished on',\
 'Effort (hrs)']].apply(lambda b: time_elapsed(b), axis=1)
 
 # remove unwanted columns
 df.drop(['Time left (hrs)','Worked on (hrs)'], axis = 1, inplace = True)
 
-#sort df by id for overview in excel sheet
+# sort df by id for overview in excel sheet
 df = df.sort_values(ascending=False, by='ID')
 
 # validating uniqueness and consecutiveness of IDs
