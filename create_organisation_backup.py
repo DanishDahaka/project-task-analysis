@@ -1,19 +1,22 @@
 import pandas as pd
-import numpy as np
+
+import os
 
 ### creating timestamp ###
 ts = pd.Timestamp.now()
 ts = str(ts.ceil(freq='1T'))   #rounding the timestamp to the nearest next minute
 ts = ts.replace(':','-')
 
+path = os.path.dirname(os.path.abspath(__file__))
+
 ### read in file ###
-infile = 'organisation-test.xlsx'
-df = pd.read_excel(infile, usecols = "A:R") 
+infile = '/organisation-test.xlsx'
+df = pd.read_excel(path+infile,  usecols = "A:Q", engine='openpyxl') 
 
 ### format output file ###
-filename = 'organisation-test'+ts+'.xlsx'
+filename = 'organisation_test_'+ts+'.xlsx'
 
-writer = pd.ExcelWriter(filename, engine='xlsxwriter')
+writer = pd.ExcelWriter(path+'/Backup/'+filename, engine='xlsxwriter')
 df.to_excel(writer, sheet_name='Sheet1', index = False)
 
 workbook  = writer.book
@@ -36,4 +39,4 @@ worksheet.set_column('Q:Q', 12) # measured effort
 
 writer.save()
 
-print('successfully backed up {}'.format(filename))
+print(f'successfully backed up {filename}')
