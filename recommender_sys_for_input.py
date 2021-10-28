@@ -138,7 +138,7 @@ def initialize_frame_for_recommender(df, title, column, top_n, new_string = Fals
             raise IOError(f'You have entered a too short amount of data. Please use different and more words than {title}.')
 
         # create new row based on the entered string
-        new_row = pd.DataFrame([[999,title,'0','You want to?','test','']], columns=df.columns.tolist(), index=[0])
+        new_row = pd.DataFrame([[999,title,'0','You want to?',]], columns=df.columns.tolist(), index=[0])
 
         # add that row to df
         df = df.append(new_row, ignore_index = True)
