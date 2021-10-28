@@ -18,18 +18,20 @@ path = os.path.dirname(os.path.abspath(__file__))
 infile = "/organisation-test.xlsx"
 
 # create df
-df = pd.read_excel(path+infile, usecols = "A:U", engine='openpyxl') 
+df = pd.read_excel(path+infile, usecols = "A:Q", engine='openpyxl') 
 
 # filter for only open tasks
 open_tasks = df[(df['Status']!='Deprecated')&(df['Status']!='Done')]
 
-
-top_n = 7
+# define top n tasks
+top_n = 3
 
 ########## future: could also take comments and first step into account? ###########
 
 # reduce amount of columns to only few ones and match based on title for now 
 open_tasks = open_tasks[['ID','Name','Deadline']]
+
+print(f'this is open tasks df: {open_tasks.head()}')
 
 
 static_view_title = open_tasks['Name'].iloc[0]
@@ -54,9 +56,12 @@ app.layout =    dbc.Container([
                             dcc.Input(id='input-1-submit', type='text', placeholder='What do you feel like doing?', 
                             # using autocomplete here to let the browser make a judgment
                             autoComplete='on', style={'width': '74%','display': 'inline-block'}),
-                            html.Button('Submit', id='btn-submit', style={'width': '26%','display': 'inline-block'}),
+                            # have some vertical distance below button
+                            html.Button('Submit', id='btn-submit', style={'width': '26%','display': 'inline-block',"margin-bottom": "50px"}),
                         ]),
-                        ### ALSO POSSIBLY CREATE SOME VERTICAL DISTANCE HERE
+
+                        ### task recommendations ###
+
                         html.Div(
                         [
                             html.Div(
@@ -96,7 +101,6 @@ app.layout =    dbc.Container([
 
                         ]
                         ),
-                        html.Br(), html.Hr()
                         ])
                     ], justify="center", align="center", className="h-50"
                     )
@@ -133,7 +137,7 @@ def update_data_table(clicked, value):
 
     if clicked:
 
-        print(f'this is our current value: {value}')
+        print(f'\nthis is our current input value: {value}')
 
         new_recommendations = initialize_frame_for_recommender(open_tasks,
                                                 value ,'Name',top_n, True)
