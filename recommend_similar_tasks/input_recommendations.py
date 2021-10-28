@@ -12,10 +12,11 @@ from recommender_sys_for_input import *
 # suppressing chained calculation warnings, comment if you want them to reappear for checks
 pd.set_option('mode.chained_assignment',None)
 
-path = os.path.dirname(os.path.abspath(__file__))
+path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print(path)
 
 # set filename
-infile = "/organisation-test.xlsx"
+infile = "/organisation/organisation-test.xlsx"
 
 # create df
 df = pd.read_excel(path+infile, usecols = "A:Q", engine='openpyxl') 
@@ -30,9 +31,6 @@ top_n = 3
 
 # reduce amount of columns to only few ones and match based on title for now 
 open_tasks = open_tasks[['ID','Name','Deadline']]
-
-print(f'this is open tasks df: {open_tasks.head()}')
-
 
 static_view_title = open_tasks['Name'].iloc[0]
 
