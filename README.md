@@ -3,7 +3,10 @@
 Contains the following two directories:
 
 ## organisation
-Based on a task list called [organisation-test.xlsx](https://github.com/DanishDahaka/project_task_analysis/blob/master/organisation/organisation-test.xlsx) data is read into a dataframe (df), adjusted and plotted with [matplotlib / seaborn](https://github.com/DanishDahaka/project_task_analysis/blob/master/organisation/task_organisation_xls_to_plt_with_sns.py) & [plotly](https://github.com/DanishDahaka/project_task_analysis/blob/master/organisation/task_organisation_xls_to_plotly.py).
+Based on a task list called [organisation-test.xlsx](https://github.com/DanishDahaka/project_task_analysis/blob/master/organisation/organisation-test.xlsx) data is read into a dataframe (df), adjusted and plotted as two variations, one with [matplotlib / seaborn](https://github.com/DanishDahaka/project_task_analysis/blob/master/organisation/task_organisation_xls_to_plt_with_sns.py) & [plotly](https://github.com/DanishDahaka/project_task_analysis/blob/master/organisation/task_organisation_xls_to_plotly.py).
+
+Example plot with Plotly:
+![](https://github.com/DanishDahaka/project_task_analysis/blob/master/images/task_scatter_matrix.png)
 
 More advanced plots available on request.
 
