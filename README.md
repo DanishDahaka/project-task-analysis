@@ -1,12 +1,12 @@
 # task_organisation_and_plotting
 
-Contains the following files:
+Contains the following directories:
 
-## task_organisation_xls_to_plotly.py & task_organisation_xls_to_mpl.py
-Based on task list in tabular format (.xlsx) which is read into a dataframe (df), adjusted, rewritten to file and plotted (matplotlib &amp; seaborn vs. plotly &amp; dash currently)
+## organisation
+Based on a task list called [organisation-test.xlsx](https://github.com/DanishDahaka/project_task_analysis/blob/master/organisation/organisation-test.xlsx) data is read into a dataframe (df), adjusted, rewritten to file and plotted with [matplotlib / seaborn](https://github.com/DanishDahaka/project_task_analysis/blob/master/organisation/task_organisation_xls_to_plt_with_sns.py) & [plotly] (https://github.com/DanishDahaka/project_task_analysis/blob/master/organisation/task_organisation_xls_to_plotly.py).
+More advanced plots available on request.
 
-## create_organisation_backup.py
-Again using the same .xlsx file, the current data is written into a new .xlsx file with added timestamps to the filename. Useful for e.g. automation of backups
+Again using the same .xlsx file, we use [create_organisation_backup.py](https://github.com/DanishDahaka/project_task_analysis/blob/master/organisation/create_organisation_backup.py) to write the current data into a new .xlsx file adding timestamps to the filename. Useful for e.g. automation of backups
 
-## input_recommendations.py & recommender_sys_for_input.py
-Create custom recommendations based on text input field rendered by Dash. The recommendations result from calculations of the [Cosine Similarity](https://en.wikipedia.org/wiki/Cosine_similarity) between the text vectors created by [TF-IDF](https://en.wikipedia.org/wiki/Tf–idf).
+## recommend_similar_tasks
+Create custom recommendations from the aforementioned task list [organisation-test.xlsx](https://github.com/DanishDahaka/project_task_analysis/blob/master/organisation/organisation-test.xlsx) based on text input field rendered as HTML in Dash. The recommendations result from calculations of the [Cosine Similarity](https://en.wikipedia.org/wiki/Cosine_similarity) between the text vectors created by [TF-IDF](https://en.wikipedia.org/wiki/Tf–idf).
