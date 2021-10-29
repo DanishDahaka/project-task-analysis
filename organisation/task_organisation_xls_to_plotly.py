@@ -8,16 +8,12 @@ import os
 #https://wiki.en.it-processmaps.com/index.php/Checklist_Incident_Priority
 #https://www.bmc.com/blogs/impact-urgency-priority/
 
-begin = pd.Timestamp.now()
-
 path = os.path.dirname(os.path.abspath(__file__))
 
 ### change infile accordingly depending on path/file
 infile = "/organisation-test.xlsx"
 outfile = path+infile
 
-
-#split column 5 ('Prerequisite (IDs) based on separator into one or multiple list elements)
 df = pd.read_excel(outfile, usecols = "A:R", engine='openpyxl')
 
 
@@ -34,15 +30,11 @@ def get_remaining_hours(timestamp,forward):
 
     return round(seconds/3600,2)
 
-#version without estimate, consider adding if it deems necessary at some point
 def urgency(vec):
-    """adding the estimate is relevant! how do you otherwise know IF and WHEN to start a project? 
-    Combine this with Predecessor/Successor""" 
+
     urgency, worked_on, hours_left, finished, estimate, set_to_doing, id, deadline, name = \
     vec[0], vec[1], vec[2], vec[3], vec[4], vec[5], vec[6], vec[7], vec[8]
 
-    """this ratio puts most tasks to low urgency if they have just been entered a couple
-    minutes ago -> they might sneak up on you. maybe different approach in the future?"""
     ratio = worked_on/(worked_on+hours_left)
 
     ###########################
@@ -61,14 +53,12 @@ def urgency(vec):
         print('Task {}: {}  is overdone. Reconsider deadline'.format(id,name))
     else:
         raise Exception('check deadline for urgency at ID {}'.format(id)) 
-
-    """  urgency should be 0 when the prerequisites/predecessors are not finished yet  """
     
     return urgency
 
 
 def time_elapsed(vec):
-    """ return here should be in hours """
+
     ins, outs, time_elapsed = vec[0], vec[1], vec[2]
     
     if pd.isnull(outs) == False:
@@ -76,7 +66,7 @@ def time_elapsed(vec):
     else:
         return time_elapsed
 
-#for plotting the impact 0-10 values onto a 0-100 scale in the graph:
+# for plotting the impact 0-10 values onto a 0-100 scale in the graph
 def map_10s_to_100s(i):
 
     rand1,rand2,rand3,rand4 = r.randrange(10),r.randrange(10),r.randrange(10),r.randrange(10)
@@ -89,7 +79,6 @@ def map_10s_to_100s(i):
 
 def priority(vec):
 
-    #maybe change this to numbers, so you can sort? can always add strings again later on!
     names = ["Low","Medium","High","Today","Done"]
 
     urgency, impact, priority = vec[0], vec[1], vec[2]
@@ -118,22 +107,18 @@ def status(vec):
 
     prio, status, finished, set_to_doing, id = vec[0], vec[1], vec[2], vec[3], vec[4]
 
-
     #check these conditions here, still some improvements to be done!
     if "Done" in prio:
         status = "Done"
     elif pd.isna(finished) == True and status == "Done":
-        status = "Check finished column" #possibly only a print statement important?
+        status = "Check finished column" 
     elif pd.isna(set_to_doing) == False:
         status = "Doing"
     else:
-        status = "To-Do" #does this work properly with both "Doing" and "To-Do" as possible status?
+        status = "To-Do" 
 
     return status
 	
-	#show pop up window (clickable list?) with tasks which are marked with today
-	
-	#def show_daily(vec):
 
 def wrong_deadline_finished(vec):
 
@@ -144,21 +129,11 @@ def wrong_deadline_finished(vec):
     else:
         pass
 	            	    
-        
-#######################    
-### begin main code ###
-#######################
+
 weekdays_hours, weekend_hours = 6,5
 current_day = pd.Timestamp.now()
 day_of_week = current_day.dayofweek
 
-"""if(day_of_week < 5):
-#weekend time, day_of_week 5 or 6
-    weekend = False
-elif(day_of_week == 5 or day_of_week == 6):
-    weekend = True
-else:
-    raise Exception("Days did not work")"""
 
 ###############################
 # pandas dataframe operations #
@@ -205,7 +180,7 @@ idstrs = [str(i) for i in ids]
 
 checklist = [i for i in range(1, len(df)+1)]
 
-#sequence in ids does not matter but all natural integers from 1 to len(df) should be inside it 
+# sequence in ids does not matter but all natural integers from 1 to len(df) should be inside it 
 if len(ids) == len(checklist):
     for i in range(0,len(ids)):
         if(checklist[i] in ids):
@@ -296,51 +271,63 @@ joined = [i + ": " + j for i, j in zip(idstrs, labels)]
 ### plotly plotting ###
 #######################
 
-#pip install plotly
+# pip install plotly
 import plotly.express as px
 
-fig = px.scatter(df,    x=df['Impact/Output'], 
-                        y=df['Urgency'],
-                        #hover_data = add existing data to plot
-                        #displays top title when hovering over 
-                        hover_name=joined,           
-                        color=df['Category'])
+discrete_cat_colors = {      
+                            'Coding': 'rgb(31,119,180)', 
+                            'Uni': 'rgb(44,160,44)', 
+                            'Other': 'rgb(127,127,127)', 
+                            'Career':'rgb(255,127,14)', 
+                            'Online course':'rgb(148,103,189)', 
+                            'Work': 'rgb(214,39,40)'
+                        }
+
+tasks = px.scatter(df,    
+                        x = 'Impact/Output',
+                        y = 'Urgency',                                                 
+                        color = 'Category',
+                        color_discrete_map = discrete_cat_colors,
+                        # setting size of the bubbles, this works properly
+                        size = 'Estimate (hrs)',
+                        title = 'Task organisation Scatterplot')
+
 
 # Set axes ranges
-fig.update_xaxes(range=[-10, 110])
-fig.update_yaxes(range=[-10, 110])
+tasks.update_xaxes(range = [-10, 110])
+tasks.update_yaxes(range = [-10, 110])
 
-#put horizontal and vertical bars
-fig.add_shape(
+# put horizontal and vertical bars
+tasks.add_shape(
         # Line Vertical
         dict(
             type="line",
-            x0=50,
-            y0=-10,
-            x1=50,
-            y1=110,
-            line=dict(
-                color="black",
-                width=3
+            x0 = 50,
+            y0 = -10,
+            x1 = 50,
+            y1 = 110,
+            line = dict(
+                        color = "black",
+                        width = 1
             )
 ))
 
-fig.add_shape(
+tasks.add_shape(
         # Line horizontal
         dict(
             type="line",
-            x0=-10,
-            y0=50,
-            x1=110,
-            y1=50,
-            line=dict(
-                color="black",
-                width=3
+            x0 = -10,
+            y0 = 50,
+            x1 = 110,
+            y1 = 50,
+            line = dict(
+                        color = "black",
+                        width = 1
             )
 ))
 
-fig.update_traces(marker=dict(size=8,
-                              line=dict(width=2,
-                                color='DarkSlateGrey')),
-                  selector=dict(mode='markers'))
-fig.show()
+tasks.update_layout(
+                        font_size = 20
+                    )
+
+tasks.show()
