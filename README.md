@@ -16,8 +16,8 @@ Read tasks rows from .xlsx format, calculate time passed from insertion and upda
 
 ## What
 Plot tasks on a simple colored scatterplot consisting of three dimensions: 
-- x-axis -> date as timestamp
-- y-axis -> duration in hours
+- x-axis -> Impact (1-100)
+- y-axis -> Urgency (1-100)
 - color  -> category of task
 
 Contains the following two directories:
