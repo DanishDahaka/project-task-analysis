@@ -1,4 +1,24 @@
-# task_organisation_and_plotting
+# Project task analysis
+
+## Short Table of Contents
+
+1. Why
+2. How
+3. What
+    1. organisation
+    2. recommend_similar_tasks
+    
+## Why
+To get a better overview about tasks in an (agile) project backlog.
+
+## How
+Read tasks rows from .xlsx format, calculate time passed from insertion and update task status.
+
+## What
+Plot tasks on a simple colored scatterplot consisting of three dimensions: 
+- x-axis -> date as timestamp
+- y-axis -> duration in hours
+- color  -> category of task
 
 Contains the following two directories:
 
