@@ -30,7 +30,7 @@ Example simple Urgency / Importance matrix with Plotly:
 
 More advanced plots available on request.
 
-Again using the same .xlsx file, we use [create_organisation_backup.py](https://github.com/DanishDahaka/project_task_analysis/blob/master/organisation/create_organisation_backup.py) to write the current data into a new .xlsx file adding timestamps to the filename. Useful for e.g. automation of backups
+Again utilizing the same .xlsx file, we use [create_organisation_backup.py](https://github.com/DanishDahaka/project_task_analysis/blob/master/organisation/create_organisation_backup.py) to write the current data into a newly named .xlsx file; simply by appending timestamps to the filename. This script may be utilized for e.g. the automation of backups
 
 ### Recommend similar tasks
 Create custom recommendations from the aforementioned task list [organisation-test.xlsx](https://github.com/DanishDahaka/project_task_analysis/blob/master/organisation/organisation-test.xlsx) based on text input field rendered as HTML in Dash. The recommendations result from calculations of the [Cosine Similarity](https://en.wikipedia.org/wiki/Cosine_similarity) between the text vectors created by [TF-IDF](https://en.wikipedia.org/wiki/Tf–idf).
